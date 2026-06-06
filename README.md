@@ -143,24 +143,6 @@ No processamento sequencial, o Java executa o filtro em uma única thread princi
 No modo paralelo, a API de Streams usa o framework **ForkJoinPool** por baixo dos panos, dividindo os dados em lotes menores e distribuindo o trabalho de filtragem entre múltiplos núcleos de CPU (*threads* concorrentes).
 *   **Tempo paralelo esperado:** Se a sua máquina tiver 8 núcleos lógicos de processamento, o tempo total cai para aproximadamente $20.000\text{ms} / 8 \approx 2.500\text{ms}$ (2.5 segundos) ou até menos!
 
-```mermaid
-graph TD
-    subgraph Seq ["Modo Sequencial (1 única Thread)"]
-        S1["Transação 1"] -->|20ms| S2["Transação 2"]
-        S2 -->|20ms| S3["Transação 3"]
-        S3 -->|...| S4["Transação 1000"]
-        S4 -->|Tempo Total: ~20s| SeqEnd(("Fim"))
-    end
-
-    subgraph Par ["Modo Paralelo (Múltiplas Threads no ForkJoinPool)"]
-        P1["Fatia 1: Transações 1-125"] -->|Thread 1| PEnd
-        P2["Fatia 2: Transações 126-250"] -->|Thread 2| PEnd
-        P3["Fatia 3: Transações ... "] -->|Thread 3| PEnd
-        P4["Fatia 4: Transações 876-1000"] -->|Thread N| PEnd
-        PEnd{"ForkJoin Combiner"} -->|Tempo Total: ~2.5s| ParEnd(("Fim"))
-    end
-```
-
 ---
 
 ## ⚠️ O Desafio Extra: Modificação de Listas Não Thread-Safe
