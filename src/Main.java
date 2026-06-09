@@ -59,7 +59,8 @@ public class Main {
             try {
                 transacoes.parallelStream()
                         .filter(ValidadorFraude::ehSuspeita)
-                        .forEach(listaExternaInsegura::add); // modificação insegura
+                        .forEach(listaExternaInsegura::add); // modificação insegura, ::add não foi feito para trabalhar
+                                                             //com multiplas threads, multiplas threads vão tentar modificar o mesmo indice (race condition)
             } catch (Exception e) {
                 System.out.println("Erro ocorrido durante o forEach inseguro: " + e.getClass().getSimpleName());
             }
